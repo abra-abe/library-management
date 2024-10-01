@@ -42,7 +42,17 @@ def create_authors(author: AuthorCreate, session: db_dependency):
 # create book route
 @app.post("/add-book")
 def create_book(book: BookCreate, session: db_dependency):
-    db_book = Book(title=book.title, publication_year=book.publication_year, author_id=book.author_id)
+    statement = select(Book).where(Book.title == book.title)
+    existing_book = session.exec(statement).first()
+
+    if existing_book:
+        raise HTTPException(status_code=400, detail="A book with this title already exists")
+    db_book = Book(
+        title=book.title, 
+        publication_year=book.publication_year, 
+        author_id=book.author_id
+        )
+    
     session.add(db_book)
     session.commit()
     session.refresh(db_book)
@@ -64,3 +74,29 @@ def fetch_books(session: db_dependency):
         }
         for book in books
     ]
+
+# update book route
+@app.put("/update-book/{book_id}")
+def update_book(book_id: int, book: BookUpdate, session: db_dependency):
+    statement = select(Book).where(Book.id == book_id)
+    existing_book = session.exec(statement).first()
+
+    if not existing_book:
+        raise HTTPException(status_code=400, detail="book not found")
+    
+    if book.title is not None:
+        existing_book.title = book.title
+
+    if book.publication_year is not None:
+        existing_book.publication_year = book.publication_year
+
+    if book.author_id is not None:
+        existing_book.author_id = book.author_id
+
+    # Commit the changes to the database
+    session.add(existing_book)
+    session.commit()
+    session.refresh(existing_book)
+
+    # Return the updated book
+    return existing_book

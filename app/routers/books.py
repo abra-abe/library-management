@@ -16,7 +16,8 @@ def create_book(book: BookCreate, session: Session = db_dependency):
     existing_book = BookQuery(session).get_by_title(title=book.title)
 
     if existing_book:
-        raise HTTPException(status_code=400, detail="A book with this title already exists")
+        # raise HTTPException(status_code=400, detail="A book with this title already exists")
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=f"A book with the title {book.title}, already exists")
     return BookQuery(session).save(book)
 
 @router.get("/books",response_model=List[BookResponse])

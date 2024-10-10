@@ -4,7 +4,7 @@ from app.models import Author
 from app.schemas import AuthorCreate
 from app.dependencies import db_dependency
 
-router = APIRouter()
+router = APIRouter(tags=["Author"])
 
 @router.post("/add-author")
 def create_authors(author: AuthorCreate, session: Session = db_dependency):

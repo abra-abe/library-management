@@ -13,3 +13,6 @@ class Book(SQLModel, table=True):
     publication_year: int
     author_id: int = Field(foreign_key="author.id")
     author: Optional[Author] = Relationship(back_populates="books")
+
+    def save(self):
+        pass

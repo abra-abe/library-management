@@ -6,10 +6,21 @@ class AuthorCreate(BaseModel):
 
 class BookCreate(BaseModel):
     title: str
-    plublication_year: int
+    publication_year: int
     author_id: int
 
 class BookUpdate(BaseModel):
-    title: Optional[str]
-    publication_year: Optional[int]
-    author_id: Optional[int]
+    title: Optional[str] = None
+    publication_year: Optional[int] = None
+    author_id: Optional[int] = None
+
+class Author(BaseModel):
+    id: int
+    name: str
+
+class BookResponse(BaseModel):
+    id:int
+    title: str
+    publication_year: int
+    author: Author
+

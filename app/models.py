@@ -5,6 +5,7 @@ from typing import Optional, List
 class Author(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
+    nationality: str
     books: List["Book"] = Relationship(back_populates="author")
 
 class Book(SQLModel, table=True):

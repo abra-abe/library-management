@@ -1,6 +1,9 @@
+from sqlmodel import Session, select
+
 from app.models import Book
-from sqlmodel import Session,select
 from app.schemas import BookCreate
+
+
 class BookQuery:
 
     def __init__(self,session:Session):

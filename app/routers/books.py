@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, HTTPException,status
+from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 from sqlmodel import Session, select
 
@@ -16,7 +16,6 @@ def create_book(book: BookCreate, session: Session = db_dependency):
     existing_book = BookQuery(session).get_by_title(title=book.title)
 
     if existing_book:
-        # raise HTTPException(status_code=400, detail="A book with this title already exists")
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=f"A book with the title {book.title}, already exists")
     return BookQuery(session).save(book)
 
@@ -44,7 +43,6 @@ def update_book(book_id: int, book: BookUpdate, session: Session = db_dependency
     existing_book = session.exec(statement).first()
 
     if not existing_book:
-        # raise (status_code=400, detail="book not found")
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,content="Book not found")
     
     book_data = book.dict(exclude_unset=True, exclude_none=True)

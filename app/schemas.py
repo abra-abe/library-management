@@ -3,6 +3,7 @@ from typing import Optional
 
 class AuthorCreate(BaseModel):
     name: str
+    nationality: str
 
 class BookCreate(BaseModel):
     title: str
@@ -13,6 +14,10 @@ class BookUpdate(BaseModel):
     title: Optional[str] = None
     publication_year: Optional[int] = None
     author_id: Optional[int] = None
+
+class AuthorUpdate(BaseModel):
+    name: Optional[str] = None
+    nationality: Optional[str] =None
 
 class Author(BaseModel):
     id: int

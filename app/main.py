@@ -12,6 +12,6 @@ app.include_router(authors.router)
 app.include_router(books.router)
 
 # root route
-@app.get("/")
+@app.get("/", tags=["home"])
 def home():
     return{"message": "this is the home route"}
